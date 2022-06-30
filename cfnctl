@@ -1,0 +1,49 @@
+#!/bin/bash
+
+print_usage() {
+    echo "Error: Invalid argument!"
+    echo "usage: $0 [ upload | create | update ]" 
+    echo "refer to the Readme file for more info: https://github.com/thilinaba/eks-cloudformation"
+}
+
+if [ $# -eq 0 ]; then 
+    print_usage
+fi
+
+# Read the params:
+PARAMS_FILE="./conf/cfnctl.conf"
+STACK_PARAMS_FILE="./conf/stack-params.json"
+TEMPLATE_DIR="./templates"
+
+source $PARAMS_FILE
+
+if [ "$1" == "upload" ]
+then
+    echo "Uploading templates to the S3 bucket"
+    if [ $# -gt 1 ]; then
+        list=$(echo $@ | cut -d " " -f 2-) # removes the first argument ("upload")
+        for file in $list; do
+            aws s3 cp $TEMPLATE_DIR/$file s3://$BUCKET_NAME/$file --profile $AWS_PROFILE
+        done
+    else
+         aws s3 cp --recursive $TEMPLATE_DIR/ s3://$BUCKET_NAME/ --profile $AWS_PROFILE
+    fi
+
+elif [ "$1" == "create" ] || [ "$1" == "update" ]
+then
+
+    BUCKET_URL="https://$BUCKET_NAME.s3.$REGION.amazonaws.com" # Construct the S3 bucket URL from BUCKET_NAME and REGION
+
+    aws cloudformation $1-stack \
+        --stack-name $STACK_NAME \
+        --template-url "$BUCKET_URL/main.yaml" \
+        --capabilities CAPABILITY_NAMED_IAM \
+        --region $REGION \
+        --parameters file://$STACK_PARAMS_FILE \
+        --profile $AWS_PROFILE
+
+# Delete command is not added to "cfnctl" because it is too dangerous :|
+
+else
+    print_usage
+fi

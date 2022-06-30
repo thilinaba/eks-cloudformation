@@ -1,0 +1,71 @@
+[
+  {
+    "ParameterKey": "CfnBucketUrl",
+    "ParameterValue": "https://sample-cfn-bucket.s3.us-east-1.amazonaws.com"
+  },
+  {
+      "ParameterKey": "Environment",
+      "ParameterValue": "Dev"
+      
+  },
+  {
+      "ParameterKey": "VpcBlock",
+      "ParameterValue": "172.18.0.0/16"
+      
+  },
+  {
+    "ParameterKey": "PublicSubnet01Block",
+    "ParameterValue": "172.18.0.0/18"
+    
+  },
+  {
+    "ParameterKey": "PublicSubnet02Block",
+    "ParameterValue": "172.18.64.0/18"
+    
+  },
+  {
+    "ParameterKey": "PrivateSubnet01Block",
+    "ParameterValue": "172.18.128.0/18"
+    
+  },
+  {
+    "ParameterKey": "PrivateSubnet02Block",
+    "ParameterValue": "172.18.192.0/18"
+    
+  },
+  {
+    "ParameterKey": "EksVersion",
+    "ParameterValue": "1.21"
+    
+  },
+  {
+    "ParameterKey": "EksNodeInstanceType",
+    "ParameterValue": "t3.medium"
+    
+  },
+  {
+    "ParameterKey": "EksClusterMinSize",
+    "ParameterValue": "1"
+    
+  },
+  {
+    "ParameterKey": "EksClusterDesiredSize",
+    "ParameterValue": "2"
+    
+  },
+  {
+    "ParameterKey": "EksClusterMaxSize",
+    "ParameterValue": "3"
+    
+  },
+  {
+    "ParameterKey": "AlbScheme",
+    "ParameterValue": "internet-facing"
+    
+  },
+  {
+    "ParameterKey": "AlbGroupName",
+    "ParameterValue": "PublicIngressAlb"
+    
+  }
+]

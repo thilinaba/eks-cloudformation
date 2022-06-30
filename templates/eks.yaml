@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Kubernetes related resources'
+
+Parameters:
+  EksRoleArn:
+    Type: String
+  NodeInstanceRole:
+    Type: String
+  PublicSubnet01:
+    Type: String
+  PublicSubnet02:
+    Type: String
+  PrivateSubnet01:
+    Type: String
+  PrivateSubnet02:
+    Type: String
+  ControlPlaneSecurityGroup:
+    Type: String
+
+Resources:
+  EKSCluster:
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: !Sub '${AWS::StackName}-Cluster'
+      Version: 1.21
+      RoleArn: !Ref EksRoleArn
+      ResourcesVpcConfig:
+        SecurityGroupIds:
+        - !Ref ControlPlaneSecurityGroup
+        SubnetIds:
+        - !Ref PublicSubnet01
+        - !Ref PublicSubnet02
+        - !Ref PrivateSubnet01
+        - !Ref PrivateSubnet02
+
+  EKSNodegroup:
+    Type: 'AWS::EKS::Nodegroup'
+    Properties:
+      ClusterName: !Ref EKSCluster
+      NodeRole: !Ref NodeInstanceRole
+      ScalingConfig:
+        MinSize: 3
+        DesiredSize: 4
+        MaxSize: 6
+      Subnets:
+        - !Ref PrivateSubnet01
+        - !Ref PrivateSubnet02
+
+Outputs:
+  EksClusterName: 
+    Value: !Ref EKSCluster

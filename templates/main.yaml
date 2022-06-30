@@ -1,0 +1,110 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Environment specific resources
+
+Parameters:
+  # Global parameters
+  CfnBucketUrl:
+    Description: S3 bucket URL to locate the nested stack CFN template files
+    Type: String
+
+  Environment:
+    Type: String
+    Description: Environment name such as dev, prod. This will be prefixed to all resource names and tags
+
+  # Network parameters
+  VpcBlock:
+    Type: String
+    Description: The CIDR range for the VPC. This should be a valid private (RFC 1918) CIDR range.
+
+  PublicSubnet01Block:
+    Type: String
+    Description: CidrBlock for public subnet 01 within the VPC
+
+  PublicSubnet02Block:
+    Type: String
+    Description: CidrBlock for public subnet 02 within the VPC
+
+  PrivateSubnet01Block:
+    Type: String
+    Description: CidrBlock for private subnet 01 within the VPC
+
+  PrivateSubnet02Block:
+    Type: String
+    Description: CidrBlock for private subnet 02 within the VPC
+
+  # EKS Cluster parameters
+  EksVersion:
+    Type: String
+    Description: CidrBlock for private subnet 02 within the VPC
+
+  EksClusterMinSize:
+    Type: String
+    Description: CidrBlock for private subnet 02 within the VPC
+
+  EksClusterDesiredSize:
+    Type: String
+    Description: CidrBlock for private subnet 02 within the VPC
+
+  EksClusterMaxSize:
+    Type: String
+    Description: CidrBlock for private subnet 02 within the VPC
+
+  EksNodeInstanceType:
+    Type: String
+    Description: CidrBlock for private subnet 02 within the VPC
+
+  # Ingress ALB Parameters
+  AlbScheme:
+    Type: String
+    Description: Ingress load balancers scheme (private or internet-facing)
+
+  AlbGroupName:
+    Type: String
+    Description: Ingress load balancers group name (this is used with K8s Ingress config to locate the correct ALB)
+
+
+
+Resources:
+  IamStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join [ "/", [ !Ref CfnBucketUrl, iam.yaml ] ]
+      Parameters:
+        Environment: !Ref Environment
+
+  NetworkStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join [ "/", [ !Ref CfnBucketUrl, network.yaml ] ]
+      Parameters:
+        VpcBlock: !Ref VpcBlock
+        PublicSubnet01Block: !Ref PublicSubnet01Block
+        PublicSubnet02Block: !Ref PublicSubnet02Block
+        PrivateSubnet01Block: !Ref PrivateSubnet01Block
+        PrivateSubnet02Block: !Ref PrivateSubnet02Block
+
+  EksStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join [ "/", [ !Ref CfnBucketUrl, eks.yaml ] ]
+      Parameters:
+        EksRoleArn: !GetAtt IamStack.Outputs.EksRoleArn
+        NodeInstanceRole: !GetAtt IamStack.Outputs.NodeInstanceRole
+        PublicSubnet01: !GetAtt NetworkStack.Outputs.PublicSubnet01
+        PublicSubnet02: !GetAtt NetworkStack.Outputs.PublicSubnet02
+        PrivateSubnet01: !GetAtt NetworkStack.Outputs.PrivateSubnet01
+        PrivateSubnet02: !GetAtt NetworkStack.Outputs.PrivateSubnet02
+        ControlPlaneSecurityGroup: !GetAtt NetworkStack.Outputs.ControlPlaneSecurityGroup
+
+  LoadBalancerStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Join [ "/", [ !Ref CfnBucketUrl, loadbalancer.yaml ] ]
+      Parameters:
+        Environment: !Ref Environment
+        EksClusterName: !GetAtt EksStack.Outputs.EksClusterName
+        VpcId: !GetAtt NetworkStack.Outputs.VpcId
+        PublicSubnet01: !GetAtt NetworkStack.Outputs.PublicSubnet01
+        PublicSubnet02: !GetAtt NetworkStack.Outputs.PublicSubnet02
+        AlbScheme: !Ref AlbScheme
+        AlbGroupName: !Ref AlbGroupName
