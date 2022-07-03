@@ -3,6 +3,8 @@
 This repository contains a well-organized set of CloudFormation Templates to deploy a complete EKS cluster with CloudFormation.
 The README files will gide you throuhg the technical details of the repository. Please refer to the "Blog Post" for an overall documentation of structure and usage.
 
+![Deployment Diagram](./docs/deployment-diagram.jpeg)
+
 ## The directory structure:
 
 - The root directory contains the "cfnctl" executable file, which is a custom made CloudFormation command line tool which will be used along with this document to deploy and manage the stack.
