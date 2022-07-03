@@ -6,19 +6,16 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: 'Network resources'
 
 Parameters:
-
+  Environment:
+    Type: String
   VpcBlock:
     Type: String
-
   PublicSubnet01Block:
     Type: String
-
   PublicSubnet02Block:
     Type: String
-
   PrivateSubnet01Block:
     Type: String
-
   PrivateSubnet02Block:
     Type: String
 
@@ -31,7 +28,7 @@ Resources:
       EnableDnsHostnames: true
       Tags:
       - Key: Name
-        Value: !Sub '${AWS::StackName}-VPC'
+        Value: !Join [ "-", [!Ref Environment, VPC] ]
 
   InternetGateway:
     Type: "AWS::EC2::InternetGateway"
@@ -111,7 +108,7 @@ Resources:
       SubnetId: !Ref PublicSubnet01
       Tags:
       - Key: Name
-        Value: !Sub '${AWS::StackName}-NatGatewayAZ1'
+        Value: !Join [ "-", [!Ref Environment, NatGateway01] ]
 
   NatGateway02:
     DependsOn:
@@ -124,7 +121,7 @@ Resources:
       SubnetId: !Ref PublicSubnet02
       Tags:
       - Key: Name
-        Value: !Sub '${AWS::StackName}-NatGatewayAZ2'
+        Value: !Join [ "-", [!Ref Environment, NatGateway02] ]
 
   NatGatewayEIP1:
     DependsOn:
@@ -155,7 +152,7 @@ Resources:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${AWS::StackName}-PublicSubnet01"
+        Value: !Join [ "-", [!Ref Environment, PublicSubnet01] ]
       - Key: kubernetes.io/role/elb
         Value: 1
 
@@ -174,7 +171,7 @@ Resources:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${AWS::StackName}-PublicSubnet02"
+        Value: !Join [ "-", [!Ref Environment, PublicSubnet02] ]
       - Key: kubernetes.io/role/elb
         Value: 1
 
@@ -192,7 +189,7 @@ Resources:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${AWS::StackName}-PrivateSubnet01"
+        Value: !Join [ "-", [!Ref Environment, PrivateSubnet01] ]
       - Key: kubernetes.io/role/internal-elb
         Value: 1
 
@@ -210,7 +207,7 @@ Resources:
         Ref: VPC
       Tags:
       - Key: Name
-        Value: !Sub "${AWS::StackName}-PrivateSubnet02"
+        Value: !Join [ "-", [!Ref Environment, PrivateSubnet02] ]
       - Key: kubernetes.io/role/internal-elb
         Value: 1
 

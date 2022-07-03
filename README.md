@@ -53,10 +53,12 @@ The "cfnctl.conf" file contains the config parameters to the "cfnctl" utility wh
 
 ### [stack-params.json](https://github.com/thilinaba/eks-cloudformation/blob/main/conf/stack-params.json)
 
+The "stack-params.json" file holds all the parameters related to the CloudFormation Stack. You can re-use the same stack by customizing just the parameters.
+
 | Variable | Definition |
 | ------ | ------ |
 | CfnBucketUrl | This is the S3 bucket's HTTPS URL to the `main.yaml` template which. The URL is generated in the format of: "https://`BUCKET-NAME`.s3.`REGION`.amazonaws.com" |
-| Environment | This will be a name prefix to your resources. For example if you sent the environment name as `"dev"`, All the AWS resource created by this stack will have the "`dev-`" prefix apended to theri names.|
+| Environment | A `unique` name. This will be the name prefix to your resources. For example if you sent the environment name as `"dev"`, All the AWS resource created by this stack will have the "`dev-`" prefix apended to their names.|
 | VpcBlock | The CIDR block for the VPC |
 | PublicSubnet01Block | The CIDR block for the Public Subnet 01 |
 | PublicSubnet02Block | The CIDR block for the Public Subnet 02 |
@@ -69,3 +71,8 @@ The "cfnctl.conf" file contains the config parameters to the "cfnctl" utility wh
 | EksClusterMaxSize | Maximum size of the EKS node group  |
 | AlbScheme | Set `internal` to make your Load Balancer internal. Set `internet-facing` to make it accessible via the Internet|
 | AlbGroupName | This value can be used in your Kubernetes Ingress configuration's `alb.ingress.kubernetes.io/group.name` annotation to identify the ALB where the ingress rule to be created. This prevents creating seperate ALB per each ingress. [More info](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/#group.name)  |
+
+
+### [stack-tags.json](https://github.com/thilinaba/eks-cloudformation/blob/main/conf/stack-tags.json)
+
+The "stack-tags.json" file holds a JSON formatted Key Value Pairs that will be added as [AWS Tags](https://docs.aws.amazon.com/general/latest/gr/aws_tagging.html) to all the resources created by the CloudFormation Stack. This makes is easy filter and isolate the resources belongs to a particular stack. You have the feedom to use any number of tags, as long as the JSON Key Value format is correctly maintained.

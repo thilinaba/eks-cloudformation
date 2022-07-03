@@ -1,7 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Kubernetes related resources'
+Description: 'EKS cluster resources'
 
 Parameters:
+  Environment:
+    Type: String
   EksRoleArn:
     Type: String
   NodeInstanceRole:
@@ -21,7 +23,7 @@ Resources:
   EKSCluster:
     Type: AWS::EKS::Cluster
     Properties:
-      Name: !Sub '${AWS::StackName}-Cluster'
+      Name: !Join [ "-", [!Ref Environment, NodeInstanceRole] ]
       Version: 1.21
       RoleArn: !Ref EksRoleArn
       ResourcesVpcConfig:

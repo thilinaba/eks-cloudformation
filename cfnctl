@@ -11,11 +11,9 @@ if [ $# -eq 0 ]; then
 fi
 
 # Read the params:
-PARAMS_FILE="./conf/cfnctl.conf"
-STACK_PARAMS_FILE="./conf/stack-params.json"
-TEMPLATE_DIR="./templates"
+CONF_FILE="./conf/cfnctl.conf"
 
-source $PARAMS_FILE
+source $CONF_FILE
 
 if [ "$1" == "upload" ]
 then
@@ -40,6 +38,7 @@ then
         --capabilities CAPABILITY_NAMED_IAM \
         --region $REGION \
         --parameters file://$STACK_PARAMS_FILE \
+        --tags file://$STACK_TAGS_FILE \
         --profile $AWS_PROFILE
 
 # Delete command is not added to "cfnctl" because it is too dangerous :|

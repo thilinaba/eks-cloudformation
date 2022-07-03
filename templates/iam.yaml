@@ -9,7 +9,7 @@ Resources:
   EksRole:
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: !Sub '${AWS::StackName}-EksRole'
+      RoleName: !Join [ "-", [!Ref Environment, EksRole] ]
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -26,7 +26,7 @@ Resources:
   NodeInstanceRole:
     Type: "AWS::IAM::Role"
     Properties:
-      RoleName: !Sub '${AWS::StackName}-NodeInstanceRole'
+      RoleName: !Join [ "-", [!Ref Environment, NodeInstanceRole] ]
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:

@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Environment specific resources
+Description: Main stack
 
 Parameters:
   # Global parameters
@@ -9,7 +9,7 @@ Parameters:
 
   Environment:
     Type: String
-    Description: Environment name such as dev, prod. This will be prefixed to all resource names and tags
+    Description: Environment name such as dev, prod. This will be prefixed to all resource names
 
   # Network parameters
   VpcBlock:
@@ -77,6 +77,7 @@ Resources:
     Properties:
       TemplateURL: !Join [ "/", [ !Ref CfnBucketUrl, network.yaml ] ]
       Parameters:
+        Environment: !Ref Environment
         VpcBlock: !Ref VpcBlock
         PublicSubnet01Block: !Ref PublicSubnet01Block
         PublicSubnet02Block: !Ref PublicSubnet02Block
@@ -88,6 +89,7 @@ Resources:
     Properties:
       TemplateURL: !Join [ "/", [ !Ref CfnBucketUrl, eks.yaml ] ]
       Parameters:
+        Environment: !Ref Environment
         EksRoleArn: !GetAtt IamStack.Outputs.EksRoleArn
         NodeInstanceRole: !GetAtt IamStack.Outputs.NodeInstanceRole
         PublicSubnet01: !GetAtt NetworkStack.Outputs.PublicSubnet01

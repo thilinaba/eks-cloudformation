@@ -1,0 +1,10 @@
+[
+    {
+      "Key": "ProjectName",
+      "Value": "eks-cloudformation-sample-project"
+    },
+    {
+        "Key": "AdminContact",
+        "Value": "admin@myteam.com"   
+    }
+  ]
