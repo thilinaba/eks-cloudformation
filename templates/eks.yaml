@@ -4,6 +4,16 @@ Description: 'EKS cluster resources'
 Parameters:
   Environment:
     Type: String
+  EksVersion:
+    Type: String
+  EksClusterMinSize:
+    Type: String
+  EksClusterDesiredSize:
+    Type: String
+  EksClusterMaxSize:
+    Type: String
+  EksNodeInstanceType:
+    Type: String
   EksRoleArn:
     Type: String
   NodeInstanceRole:
@@ -24,7 +34,7 @@ Resources:
     Type: AWS::EKS::Cluster
     Properties:
       Name: !Join [ "-", [!Ref Environment, NodeInstanceRole] ]
-      Version: 1.21
+      Version: !Ref EksVersion
       RoleArn: !Ref EksRoleArn
       ResourcesVpcConfig:
         SecurityGroupIds:
@@ -41,9 +51,9 @@ Resources:
       ClusterName: !Ref EKSCluster
       NodeRole: !Ref NodeInstanceRole
       ScalingConfig:
-        MinSize: 3
-        DesiredSize: 4
-        MaxSize: 6
+        MinSize: !Ref EksClusterMinSize
+        DesiredSize: !Ref EksClusterDesiredSize
+        MaxSize: !Ref EksClusterMaxSize
       Subnets:
         - !Ref PrivateSubnet01
         - !Ref PrivateSubnet02

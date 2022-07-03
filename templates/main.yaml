@@ -90,6 +90,11 @@ Resources:
       TemplateURL: !Join [ "/", [ !Ref CfnBucketUrl, eks.yaml ] ]
       Parameters:
         Environment: !Ref Environment
+        EksVersion: !Ref EksVersion
+        EksClusterMinSize: !Ref EksClusterMinSize
+        EksClusterDesiredSize: !Ref EksClusterDesiredSize
+        EksClusterMaxSize: !Ref EksClusterMaxSize
+        EksNodeInstanceType: !Ref EksNodeInstanceType
         EksRoleArn: !GetAtt IamStack.Outputs.EksRoleArn
         NodeInstanceRole: !GetAtt IamStack.Outputs.NodeInstanceRole
         PublicSubnet01: !GetAtt NetworkStack.Outputs.PublicSubnet01
