@@ -52,6 +52,9 @@ The "cfnctl.conf" file contains the config parameters to the "cfnctl" utility wh
 | REGION | AWS region the CloudFormation Stack to be deployed in |
 | AWS_PROFILE | The [AWS CLI profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) that you configure with the credentials. If you don't specify such, The defaut value is "default" |
 | STACK_NAME | The name of the target CloudFormation stack to be created |
+| STACK_PARAMS_FILE | Path to the Stack parameters file |
+| STACK_TAGS_FILE | Path to the Stack tags file |
+| TEMPLATE_DIR | Path to the CloudFormation templates |
 
 ### [stack-params.json](https://github.com/thilinaba/eks-cloudformation/blob/main/conf/stack-params.json)
 
