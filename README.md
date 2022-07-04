@@ -1,7 +1,7 @@
 # Deploy EKS Cluster with CloudFormation
 
 This repository contains a well-organized set of CloudFormation Templates to deploy a complete EKS cluster with CloudFormation.
-The README files will gide you throuhg the technical details of the repository. Please refer to the "Blog Post" for an overall documentation of structure and usage.
+The README files will gide you throuhg the technical details of the repository. Please refer to the ["Blog Post"](https://medium.com/cloud-life/organize-cloudformation-templates-with-external-parameters-file-7998098f1b8d) for an overall documentation of structure and usage.
 
 ![Deployment Diagram](./docs/deployment-diagram.jpeg)
 
@@ -48,7 +48,7 @@ The "cfnctl.conf" file contains the config parameters to the "cfnctl" utility wh
 
 | Variable | Definition |
 | ------ | ------ |
-| BUCKET_NAME | The S3 bucket name which will hold the CloudFormation templates. See the prerequisites section of the Blog Post for more details |
+| BUCKET_NAME | The S3 bucket name which will hold the CloudFormation templates. See the prerequisites section of the [Blog Post](https://medium.com/cloud-life/organize-cloudformation-templates-with-external-parameters-file-7998098f1b8d) for more details |
 | REGION | AWS region the CloudFormation Stack to be deployed in |
 | AWS_PROFILE | The [AWS CLI profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) that you configure with the credentials. If you don't specify such, The defaut value is "default" |
 | STACK_NAME | The name of the target CloudFormation stack to be created |
